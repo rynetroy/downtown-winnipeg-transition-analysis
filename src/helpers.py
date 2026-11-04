@@ -1321,7 +1321,7 @@ def prepare_dhs_scenarios(residential_demand: int) -> tuple[dict[str, list[int]]
     scenarios = {
         "Current Assessment": [42, residential_demand, 78, 72, 8],
         "Pessimistic: Projects Delay 2+ Yrs": [35, int(residential_demand * 0.6), 55, 60, 9],
-        "Optimistic: On-Time + Recovery": [58, int(residential_demand * 1.15), 85, 80, 6],
+        "Optimistic: On-Time + Recovery": [58, min(100, int(residential_demand * 1.15)), 85, 80, 6],
         "Stagnation: Pipeline Stalls": [30, 40, 40, 50, 9],
     }
     weights = [0.25, 0.25, 0.25, 0.15, -0.10]

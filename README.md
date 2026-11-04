@@ -9,7 +9,6 @@
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat-square&logo=pandas&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=flat-square&logo=Matplotlib&logoColor=black)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=flat-square&logo=scikit-learn&logoColor=white)
-<!-- [CONFIRM] Keep the scikit-learn badge only if the notebook uses it. If it trains a model on the ~7 housing projects, label that section "illustrative only" or remove it and this badge. -->
 ![Release](https://img.shields.io/github/v/release/rynetroy/downtown-winnipeg-transition-analysis?style=flat-square)
 
 **Downtown Winnipeg isn't dying. It's being rebuilt into something different, and the results may not show up until 2027 or 2028.**
@@ -80,7 +79,7 @@ The four positive components are scored on a 0–100 scale. Vacancy & Distress i
 
 **Check the math:** (0.25 × 42) + (0.25 × 92) + (0.25 × 78) + (0.15 × 72) − (0.10 × 8) = 10.5 + 23.0 + 19.5 + 10.8 − 0.8 = **63.0**
 
-**How each component is set:** Residential Demand is calculated from the housing pipeline (completed and planned units, plus a population signal). Business Stability, Investment Pipeline, Spatial Anchoring and Vacancy & Distress are assessed scores based on the sources in the registry, not calculated values. Because vacancy is scored 0–10, its maximum penalty is 1 point.
+**How each component is set:** Residential Demand is calculated from the housing pipeline: completed units and pipeline units are each scaled to 0–100 (capped at 100) and combined with a population signal. Business Stability, Investment Pipeline, Spatial Anchoring and Vacancy & Distress are assessed scores based on the sources in the registry, not calculated values. Because vacancy is scored 0–10, its maximum penalty is 1 point.
 
 This combination suggests that downtown Winnipeg is not in structural decline, but it has not yet realized the street-level benefits of its redevelopment pipeline.
 
@@ -88,7 +87,7 @@ This combination suggests that downtown Winnipeg is not in structural decline, b
 
 | Scenario | DHS |
 |---|---:|
-| On-time delivery | ~73 |
+| On-time delivery | ~72 |
 | Current baseline | 63 |
 | 2+ year delay | ~44 |
 | Pipeline stall | ~34 |
@@ -123,7 +122,7 @@ Most major redevelopment activity is concentrated along Portage Avenue between t
 
 ![Four scenarios for downtown depending on construction timelines](visuals/fig_scenarios.png)
 
-If projects finish on time and people move in, the Downtown Health Score could reach **73 out of 100**. If construction is delayed by two or more years, it could fall to **44**.
+If projects finish on time and people move in, the Downtown Health Score could reach **72 out of 100**. If construction is delayed by two or more years, it could fall to **44**.
 
 The empty storefronts are unlikely to fill back up before the new residential base arrives. That means the transition may not become visible at street level until 2027 or 2028.
 
@@ -157,15 +156,13 @@ Vacancy alone says downtown is getting worse. The housing pipeline alone says it
 Only residential demand has enough project-level data to calculate a score. For business stability, investment pipeline, spatial anchoring and vacancy, the sources describe conditions but don't produce a single comparable number, so those are assessed from the source registry and stated openly. This is the main reason the DHS is a scenario tool, not a measurement.
 
 **Weights set by reasoning, not fitted to data.**
-There is no historical "downtown health" outcome to train against, so the weights could not be learned from data. Business stability, residential demand and investment pipeline each carry 25% because each one alone can change the street-level outcome; spatial anchoring carries 15%; vacancy is applied as a 10% penalty. With equal weights the baseline moves from 63 to 55.2 but stays in the same band, so the conclusion does not rest on these exact weights.
-<!-- [CONFIRM] Replace with your own reason for 15% spatial and the 10% vacancy penalty. -->
+There is no historical "downtown health" outcome to train against, so the weights could not be learned from data. Business stability, residential demand and investment pipeline each carry 25% because each one alone can change the street-level outcome; spatial anchoring carries 15% because it answers where the renovations are happening: most of the redevelopment is the remodelling of old, existing buildings, and the project map shows it concentrated along Portage Avenue, so where those buildings sit shapes what changes on the street; vacancy is applied as a 10% penalty. With equal weights the baseline moves from 63 to 55.2 but stays in the same band, so the conclusion does not rest on these exact weights.
 
 **Vacancy as a small penalty, not a positive component.**
-High vacancy hurts perception, leasing and investment risk, so it subtracts from the score instead of being inverted and added like the other four. It is scored 0–10, which caps its effect at 1 point. Vacancy pressure is already reflected in business stability, so a large separate penalty would count it twice.
-<!-- [CONFIRM] Keep the "count it twice" reason only if that was your reasoning. If not, either explain your actual reason or move vacancy to a 0-100 scale. -->
+High vacancy hurts perception, leasing and investment risk, so it subtracts from the score instead of being inverted and added like the other four. It is scored 0–10, which caps its effect at 1 point. Vacancy depends heavily on which part of downtown you look at, but the CBRE rate is a single downtown-wide figure, so it is kept as a small penalty rather than a full component.
 
 **Scenarios instead of a forecast.**
-The outcome depends mostly on whether planned projects are finished and occupied, which 15 years of history can't predict. So the score is recalculated under four delivery scenarios instead of forecasting one number. The spread between them (~73 to ~34) is the finding: the outlook depends on execution, not on today's storefronts.
+The outcome depends mostly on whether planned projects are finished and occupied, which 15 years of history can't predict. So instead of forecasting one number, each scenario sets the five component scores to reflect a delivery outcome (for example, a 2+ year delay cuts residential demand by 40%), and the score is recalculated. The scenario inputs are assumptions, not model outputs. The spread between them (~72 to ~34) is the finding: the outlook depends on execution, not on today's storefronts.
 
 **2013 as the baseline for business activity.**
 2013 is the peak year in the series, so comparing to it shows the full size of the retail decline and makes the faster food and service recovery visible against the same reference point. The trade-off: 2013 sits in the reconstructed, low-confidence period, so the size of the decline is approximate even though the direction is clear.
@@ -191,4 +188,5 @@ Full source registry: [`data/downtown_wpg_sources_2026.csv`](data/downtown_wpg_s
 
 - **Pipeline:** Data cleaning with pandas → trend analysis → scenario modeling → stakeholder visualization.
 - **Key logic:** The Downtown Health Score is a constructed index combining residential growth, vacancy pressure, business activity, investment pipeline strength, and spatial concentration. Residential demand is calculated; the other components are assessed.
+- **Prediction demo:** Section 8 fits a small decision tree to the 7 named housing projects to demonstrate a scikit-learn workflow. With a 3-row test set, its accuracy (0.33) is not meaningful, and no conclusions are drawn from it.
 - **Environment:** Python 3.11+, with `conda` or `venv` recommended.
