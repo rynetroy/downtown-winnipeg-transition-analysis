@@ -9,6 +9,7 @@
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat-square&logo=pandas&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=flat-square&logo=Matplotlib&logoColor=black)
 ![scikit-learn](https://img.shields.io/badge/scikit--learn-%23F7931E.svg?style=flat-square&logo=scikit-learn&logoColor=white)
+<!-- [CONFIRM] Keep the scikit-learn badge only if the notebook uses it. If it trains a model on the ~7 housing projects, label that section "illustrative only" or remove it and this badge. -->
 ![Release](https://img.shields.io/github/v/release/rynetroy/downtown-winnipeg-transition-analysis?style=flat-square)
 
 **Downtown Winnipeg isn't dying. It's being rebuilt into something different, and the results may not show up until 2027 or 2028.**
@@ -34,7 +35,7 @@ Is downtown Winnipeg in decline, or is it moving through a delayed transition fr
 | Redevelopment pipeline | $2B+ planned, committed, and phased investment |
 | New apartments confirmed or proposed | 1,635–1,793 units |
 | Office space sitting empty | 18.6% in 2025 |
-| Retail activity vs. 2013 | Estimated down ~63% |
+| Retail activity vs. 2013 | Estimated down ~63% (reconstructed base year) |
 | Downtown Health Score | 63 / 100, constructed scenario index, mixed performance, not structural decline |
 
 The **Downtown Health Score** is a constructed scenario index combining business activity, residential growth, investment pipeline strength, spatial concentration, and office vacancy pressure. It is not an official city metric. It is used here as a directional way to compare whether downtown is improving, stagnating, or worsening.
@@ -62,12 +63,12 @@ DHS =
 + 0.15 × Spatial Anchoring  
 − 0.10 × Vacancy & Distress
 
-All positive components are normalized to a 0–100 scale. Vacancy & Distress is applied as a penalty to reflect the negative impact of office vacancy on downtown perception, leasing activity, and investment risk.
+The four positive components are scored on a 0–100 scale. Vacancy & Distress is scored on a 0–10 scale and applied as a penalty to reflect the negative impact of office vacancy on downtown perception, leasing activity, and investment risk.
 
 ### Current Score
 
 **DHS = 63 / 100**  
-**Band: Mixed / Transitional**
+**Band: Mixed / Transitional (50–64)**
 
 | Component | Score | Interpretation |
 |---|---:|---|
@@ -75,9 +76,11 @@ All positive components are normalized to a 0–100 scale. Vacancy & Distress is
 | Investment Pipeline | 78 | High, but dependent on execution |
 | Spatial Anchoring | 72 | Concentrated redevelopment corridor |
 | Business Stability | 42 | Weak current street-level activity |
-| Vacancy & Distress | 8 (applied as a penalty) | Ongoing office vacancy pressure |
+| Vacancy & Distress | 8 / 10 (applied as a penalty) | Ongoing office vacancy pressure |
 
 **Check the math:** (0.25 × 42) + (0.25 × 92) + (0.25 × 78) + (0.15 × 72) − (0.10 × 8) = 10.5 + 23.0 + 19.5 + 10.8 − 0.8 = **63.0**
+
+**How each component is set:** Residential Demand is calculated from the housing pipeline (completed and planned units, plus a population signal). Business Stability, Investment Pipeline, Spatial Anchoring and Vacancy & Distress are assessed scores based on the sources in the registry, not calculated values. Because vacancy is scored 0–10, its maximum penalty is 1 point.
 
 This combination suggests that downtown Winnipeg is not in structural decline, but it has not yet realized the street-level benefits of its redevelopment pipeline.
 
@@ -92,11 +95,11 @@ This combination suggests that downtown Winnipeg is not in structural decline, b
 
 The model is most sensitive to **Residential Demand** and **Investment Pipeline**, which together account for half of the score. This means the outlook depends less on today’s empty storefronts alone and more on whether major housing and mixed-use projects are completed, occupied, and connected to street-level activity.
 
-<!-- [ADD] Weight sensitivity check: rerun with equal 20% weights and report the score here, e.g. "With equal weights the baseline score is XX, so the conclusion holds / changes because..." -->
+**Weight check:** with equal 20% weights on all five components, the baseline score is 55.2, still inside the Mixed / Transitional band (50–64). The conclusion does not depend on the chosen weights.
 
 ### Limitations
 
-The DHS depends on assumptions, normalization choices, and theory-driven weights. It should be used for directional scenario comparison, not precise measurement. It is not directly comparable across other cities without recalibrating the inputs and weights.
+The DHS depends on assumptions, normalization choices, and theory-driven weights. Four of its five components are assessed scores rather than calculated values, and the vacancy penalty is deliberately small. It should be used for directional scenario comparison, not precise measurement. It is not directly comparable across other cities without recalibrating the inputs and weights.
 
 ## Office Vacancy Has More Than Doubled, But the Sharpest Increase Has Slowed
 
@@ -108,7 +111,7 @@ Vacancy rose from 8.7% in 2016 to 18.6% in 2025. However, the pace slowed sharpl
 
 ![Downtown business activity by sector, 2010-2024 compared to 2013 levels](visuals/fig_business_activity.png)
 
-Retail activity is estimated to be down about 63% from its 2013 peak, which helps explain the visible empty storefronts. Food and service activity has recovered faster than retail since COVID. The data supports the visible recovery in downtown food, cafe, and service activity.
+Retail activity is estimated to be down about 63% from its 2013 peak, which helps explain the visible empty storefronts. The 2013 baseline falls in the low-confidence, reconstructed part of the series, so the 63% figure shows the direction and rough size of the decline, not an exact measurement. Food and service activity has recovered faster than retail since COVID. The data supports the visible recovery in downtown food, cafe, and service activity.
 
 ## The Construction Is Concentrated in Six City Blocks
 
@@ -150,18 +153,22 @@ Most downtown coverage asks "is downtown dying?" That can only be answered one m
 **A composite score instead of a single headline metric.**
 Vacancy alone says downtown is getting worse. The housing pipeline alone says it is getting better. Neither is the full picture, so the Downtown Health Score combines five signals into one number. It is a way to compare scenarios, not a measurement, and it is labelled that way everywhere it appears.
 
+**Assessed scores where the data can't calculate one.**
+Only residential demand has enough project-level data to calculate a score. For business stability, investment pipeline, spatial anchoring and vacancy, the sources describe conditions but don't produce a single comparable number, so those are assessed from the source registry and stated openly. This is the main reason the DHS is a scenario tool, not a measurement.
+
 **Weights set by reasoning, not fitted to data.**
-There is no historical "downtown health" outcome to train against, so the weights could not be learned from data. Business stability, residential demand and investment pipeline each carry 25% because each one alone can change the street-level outcome; spatial anchoring carries 15%; vacancy is applied as a 10% penalty.
+There is no historical "downtown health" outcome to train against, so the weights could not be learned from data. Business stability, residential demand and investment pipeline each carry 25% because each one alone can change the street-level outcome; spatial anchoring carries 15%; vacancy is applied as a 10% penalty. With equal weights the baseline moves from 63 to 55.2 but stays in the same band, so the conclusion does not rest on these exact weights.
 <!-- [CONFIRM] Replace with your own reason for 15% spatial and the 10% vacancy penalty. -->
 
-**Vacancy as a penalty, not a positive component.**
-High vacancy hurts perception, leasing and investment risk, so it subtracts from the score instead of being inverted and added like the other four. This keeps the direction of each component easy to read.
+**Vacancy as a small penalty, not a positive component.**
+High vacancy hurts perception, leasing and investment risk, so it subtracts from the score instead of being inverted and added like the other four. It is scored 0–10, which caps its effect at 1 point. Vacancy pressure is already reflected in business stability, so a large separate penalty would count it twice.
+<!-- [CONFIRM] Keep the "count it twice" reason only if that was your reasoning. If not, either explain your actual reason or move vacancy to a 0-100 scale. -->
 
 **Scenarios instead of a forecast.**
 The outcome depends mostly on whether planned projects are finished and occupied, which 15 years of history can't predict. So the score is recalculated under four delivery scenarios instead of forecasting one number. The spread between them (~73 to ~34) is the finding: the outlook depends on execution, not on today's storefronts.
 
 **2013 as the baseline for business activity.**
-2013 is the peak year in the series, so comparing to it shows the full size of the retail decline (~63%) and makes the faster food and service recovery visible against the same reference point.
+2013 is the peak year in the series, so comparing to it shows the full size of the retail decline and makes the faster food and service recovery visible against the same reference point. The trade-off: 2013 sits in the reconstructed, low-confidence period, so the size of the decline is approximate even though the direction is clear.
 
 **Keep estimated years, but label them.**
 CBRE vacancy data was missing for 4 of 10 years, and business activity before 2021 had to be reconstructed from supporting sources. Dropping those years would have hidden the trend, so they stay in, flagged as estimates, and conclusions are written as directional rather than exact. Every source is listed in the source registry below.
@@ -183,5 +190,5 @@ Full source registry: [`data/downtown_wpg_sources_2026.csv`](data/downtown_wpg_s
 ### Technical Overview
 
 - **Pipeline:** Data cleaning with pandas → trend analysis → scenario modeling → stakeholder visualization.
-- **Key logic:** The Downtown Health Score is a constructed index combining residential growth, vacancy pressure, business activity, investment pipeline strength, and spatial concentration.
+- **Key logic:** The Downtown Health Score is a constructed index combining residential growth, vacancy pressure, business activity, investment pipeline strength, and spatial concentration. Residential demand is calculated; the other components are assessed.
 - **Environment:** Python 3.11+, with `conda` or `venv` recommended.
