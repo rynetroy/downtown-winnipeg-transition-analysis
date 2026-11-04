@@ -75,7 +75,9 @@ All positive components are normalized to a 0–100 scale. Vacancy & Distress is
 | Investment Pipeline | 78 | High, but dependent on execution |
 | Spatial Anchoring | 72 | Concentrated redevelopment corridor |
 | Business Stability | 42 | Weak current street-level activity |
-| Vacancy & Distress | -8 | Ongoing office vacancy pressure |
+| Vacancy & Distress | 8 (applied as a penalty) | Ongoing office vacancy pressure |
+
+**Check the math:** (0.25 × 42) + (0.25 × 92) + (0.25 × 78) + (0.15 × 72) − (0.10 × 8) = 10.5 + 23.0 + 19.5 + 10.8 − 0.8 = **63.0**
 
 This combination suggests that downtown Winnipeg is not in structural decline, but it has not yet realized the street-level benefits of its redevelopment pipeline.
 
@@ -90,11 +92,13 @@ This combination suggests that downtown Winnipeg is not in structural decline, b
 
 The model is most sensitive to **Residential Demand** and **Investment Pipeline**, which together account for half of the score. This means the outlook depends less on today’s empty storefronts alone and more on whether major housing and mixed-use projects are completed, occupied, and connected to street-level activity.
 
+<!-- [ADD] Weight sensitivity check: rerun with equal 20% weights and report the score here, e.g. "With equal weights the baseline score is XX, so the conclusion holds / changes because..." -->
+
 ### Limitations
 
 The DHS depends on assumptions, normalization choices, and theory-driven weights. It should be used for directional scenario comparison, not precise measurement. It is not directly comparable across other cities without recalibrating the inputs and weights.
 
-## Office Vacancy Has Nearly Doubled, But the Sharpest Increase Has Slowed
+## Office Vacancy Has More Than Doubled, But the Sharpest Increase Has Slowed
 
 ![Office vacancy rates: Winnipeg vs. the national average, 2016-2025](visuals/fig_vacancy.png)
 
@@ -135,6 +139,38 @@ Downtown is not failing. It is lagging its own transformation timeline.
 This analysis builds on a growing local conversation about downtown Winnipeg's future. Recent reporting has increasingly framed major projects like Portage Place and the former Bay building not as a return to the old retail model, but as part of a broader shift toward housing, institutional uses, and adaptive reuse.
 
 This project adds a data-based framework for connecting those redevelopment stories to vacancy trends, business activity, spatial concentration, and delivery timing.
+
+## Design Decisions
+
+Each choice below is one I'd expect to be asked about, so here is the reasoning behind it.
+
+**One question, framed as decline vs. transition.**
+Most downtown coverage asks "is downtown dying?" That can only be answered one metric at a time, and every metric gives a different answer. Framing it as "decline, or a delayed transition?" tests whether signals that look contradictory (empty storefronts and cranes) are the same story at different points in time.
+
+**A composite score instead of a single headline metric.**
+Vacancy alone says downtown is getting worse. The housing pipeline alone says it is getting better. Neither is the full picture, so the Downtown Health Score combines five signals into one number. It is a way to compare scenarios, not a measurement, and it is labelled that way everywhere it appears.
+
+**Weights set by reasoning, not fitted to data.**
+There is no historical "downtown health" outcome to train against, so the weights could not be learned from data. Business stability, residential demand and investment pipeline each carry 25% because each one alone can change the street-level outcome; spatial anchoring carries 15%; vacancy is applied as a 10% penalty.
+<!-- [CONFIRM] Replace with your own reason for 15% spatial and the 10% vacancy penalty. -->
+
+**Vacancy as a penalty, not a positive component.**
+High vacancy hurts perception, leasing and investment risk, so it subtracts from the score instead of being inverted and added like the other four. This keeps the direction of each component easy to read.
+
+**Scenarios instead of a forecast.**
+The outcome depends mostly on whether planned projects are finished and occupied, which 15 years of history can't predict. So the score is recalculated under four delivery scenarios instead of forecasting one number. The spread between them (~73 to ~34) is the finding: the outlook depends on execution, not on today's storefronts.
+
+**2013 as the baseline for business activity.**
+2013 is the peak year in the series, so comparing to it shows the full size of the retail decline (~63%) and makes the faster food and service recovery visible against the same reference point.
+
+**Keep estimated years, but label them.**
+CBRE vacancy data was missing for 4 of 10 years, and business activity before 2021 had to be reconstructed from supporting sources. Dropping those years would have hidden the trend, so they stay in, flagged as estimates, and conclusions are written as directional rather than exact. Every source is listed in the source registry below.
+
+**Map the projects instead of treating downtown as one place.**
+Averages across all of downtown hid the most important pattern: investment is concentrated in roughly six blocks of Portage Avenue, while the Exchange District looks different. Mapping the projects turned "downtown" into corridors with different needs, which is where the implications come from.
+
+**Implications, not instructions.**
+The data supports directions (finish housing first, activate empty retail in the meantime, focus streetscape work where investment already is). It does not support costed recommendations, so the section is called Implications on purpose.
 
 ## About the Data
 
