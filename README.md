@@ -2,7 +2,7 @@
 
 # Downtown Winnipeg Transition Analysis
 
-**Troy Dela Rosa** | Independent academic project, Python Essentials With Data Analysis (COMP-2040), RRC Polytech | April 2026, revised November 2026
+**Troy Dela Rosa** | Independent academic project | April 2026, revised November 2026
 
 ![Python](https://img.shields.io/badge/python-3670A0?style=flat-square&logo=python&logoColor=ffdd54)
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat-square&logo=pandas&logoColor=white)
