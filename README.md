@@ -8,13 +8,13 @@
 ![Pandas](https://img.shields.io/badge/pandas-%23150458.svg?style=flat-square&logo=pandas&logoColor=white)
 ![Matplotlib](https://img.shields.io/badge/Matplotlib-%23ffffff.svg?style=flat-square&logo=Matplotlib&logoColor=black)
 
-> **Revised November 2026.** The first version of this project claimed more than its data could support. This README separates what the sources show from what I estimated or assumed. See [What changed](#what-changed-in-this-revision).
-
 ## Question
 
 Is downtown Winnipeg in decline, or is it partway through a shift from office and retail toward housing and mixed use?
 
-**Short answer:** the public sources show a large building program next to high office vacancy. They cannot show whether street-level business is recovering, because no public dataset I found measures it.
+**Short answer:** it looks like a transition that is not finished. Office vacancy has more than doubled since 2016, while about $1.15B in projects and 797 to 947 housing units are still under construction or planned. Whether street-level business is recovering can't be answered yet, because no public dataset I found measures it.
+
+This README keeps three things apart: what the sources show, what they cannot show, and what is my own judgment.
 
 ## What the sources show
 
@@ -54,9 +54,7 @@ About 590 units are built. The larger share, 797 to 947 units, depends on projec
 **Street-level business activity.** I could not find a public count of open shops, restaurants or offices downtown over time.
 
 - The City of Winnipeg business licence data does not cover it. The City licenses only a short list of activities (rooming houses, used goods dealers and similar), so a shop or restaurant never appears in that file. I found this later in my [Winnipeg Business Licence Data Governance](https://github.com/rynetroy/winnipeg-licence-governance) project.
-- The first version of this project filled the gap with a **synthetic series** for 2010 to 2024 ([`Winnipeg_Synthetic_License_Model_2010_2024.xlsx`](data/Winnipeg_Synthetic_License_Model_2010_2024.xlsx)). Those numbers were written to match a storyline, not collected. The earlier claims that retail is "down about 63% from 2013" and that "restaurants are recovering" came from that file, and I have withdrawn them.
-
-The file and its chart (`visuals/fig_business_activity.png`) stay in the repo for transparency. They are not evidence.
+- The repo includes a **synthetic series** for 2010 to 2024 ([`Winnipeg_Synthetic_License_Model_2010_2024.xlsx`](data/Winnipeg_Synthetic_License_Model_2010_2024.xlsx)) that I built to fill this gap. Its numbers were written to fit known events, not collected, so no finding here relies on it. The file and its chart (`visuals/fig_business_activity.png`) are kept for transparency only.
 
 ## Scenario sketch (my judgment, not a measurement)
 
@@ -66,7 +64,7 @@ To compare "what if projects finish on time" against "what if they stall", I bui
 |---|---:|---:|---|
 | Residential demand | 25% | 92 | Partly calculated from housing units; the scaling and a population input of 65 are my choices |
 | Investment pipeline | 25% | 78 | My judgment |
-| Business stability | 25% | 42 | My judgment, informed by the withdrawn synthetic series |
+| Business stability | 25% | 42 | My judgment, informed by the synthetic series |
 | Spatial anchoring | 15% | 72 | My judgment |
 | Vacancy and distress | 10% penalty | 8 of 10 | My judgment |
 
@@ -87,18 +85,6 @@ What it is not: a measurement, a forecast, or an official city metric. Different
 - Office vacancy near 18% looks like the new normal, close to the national rate, not a temporary dip.
 - Anyone who wants to measure street-level recovery needs a better source than licence data, such as a storefront survey or business improvement zone counts.
 
-## What changed in this revision
-
-| First version (April 2026) | Now |
-|---|---|
-| "Retail down ~63% from 2013" | Withdrawn. Based on a synthetic series. |
-| "Restaurants are recovering, retail is not" | Withdrawn. Same reason. |
-| "$2B+ redevelopment pipeline" | About $2.36B in named projects since 2008, of which about $1.21B is already complete |
-| "1,635 to 1,793 new apartments confirmed or proposed" | 1,381 to 1,539 in named projects. The earlier figure counted two projects twice. |
-| Health score presented as a finding | Presented as a scenario sketch built on my own judgment scores |
-
-The notebook text and some chart labels still carry the April wording. Where they disagree with this README, this README is correct.
-
 ## Data
 
 | File | What it is | Type |
@@ -118,5 +104,20 @@ The notebook text and some chart labels still carry the April wording. Where the
 - **Course requirement:** Section 8 fits a decision tree to the 7 housing projects to show a scikit-learn workflow. With 3 test rows its accuracy (0.33) means nothing, and no conclusion uses it.
 
 **To run:** open the main notebook and run all cells.
+
+## What I learned revising this
+
+I built the first version in April 2026 and audited it in November, after my licence data project showed the licence file could not measure retail. The audit changed four things:
+
+| April 2026 | November 2026 |
+|---|---|
+| "Retail down ~63% from 2013", "restaurants are recovering" | Removed. Both came from the synthetic series. |
+| "$2B+ redevelopment pipeline" | About $2.36B in named projects since 2008, about $1.21B of it already complete |
+| "1,635 to 1,793 new apartments" | 1,381 to 1,539. The earlier figure counted two projects twice. |
+| Health score presented as a finding | Presented as a scenario sketch built on my own judgment |
+
+The lesson I took: check what a dataset can measure before building on it, and keep estimates labelled as estimates all the way to the headline.
+
+The notebook text and some chart labels still carry the April wording. Where they disagree with this README, this README is correct.
 
 *Personal academic project on public sources. Not affiliated with or endorsed by the City of Winnipeg.*
